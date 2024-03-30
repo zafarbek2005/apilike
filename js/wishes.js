@@ -4,23 +4,6 @@ const loading = document.querySelector('.loading');
 
 let wishes = JSON.parse(localStorage.getItem("wishes"))
 
-async function fetchData(api) {
-    try {
-        const response = await fetch(api);
-        if (!response.ok) {
-            throw new Error('Network response was not ok.');
-        }
-        const data = await response.json();
-        createCard(data);
-    } catch (error) {
-        console.error('Error fetching data:', error);
-    } finally {
-        loading.style.display = 'none';
-    }
-}
-
-fetchData(API_URL);
-
 
 function createCard(data) {
     const fragment = document.createDocumentFragment();
@@ -40,3 +23,4 @@ function createCard(data) {
     });
     wrapper.appendChild(fragment);
 }
+createCard(wishes)

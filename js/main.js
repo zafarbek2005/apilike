@@ -43,19 +43,18 @@ const singleRoute = (id) => {
 };  
 
 const setWish = async (id) =>{
+    let  getData = await fetch(`${API_URL}/${id}`)
     getData
     .json()
-    .then((data) => {
+    .then((res) => {
         let wishes = JSON.parse(localStorage.getItem("wishes")) || [];
         let index = wishes.findIndex(el => el.id === +id);
-        if (index > -1) {
-            wishes.splice(index, 1);
-        } else {
-            wishes.push({id: +id});
-        }
-        
+        if (index < 0) {
+         localStorage.setItem('wishes',JSON.stringify([...wishes,res]))
+        } 
     })
     .catch((err) => {
+        console.log(err);
     })
 }
 
@@ -65,7 +64,7 @@ wrapper.addEventListener('click', (e) => {
         const id = e.target.closest('[data-id]').getAttribute('data-id');
         singleRoute(id);
     }else if  (name === "product-wish"){
-        const id = e.target.closest('[data-id]').getAttribute('data-id');
+        const id = e.target.closest('[data-id]').dataset.id
         setWish(id)
     } 
 });
